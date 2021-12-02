@@ -11,10 +11,8 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
 
   private fun run(strategy: Strategy) = dataAsLines
     .parseWith(strategy)
-    .fold(State(), Day02::evolveState)
+    .fold(State()) { s, fn -> fn(s) }
     .let { it.x * it.y }
-
-  private fun evolveState(state: State, fn: (State) -> State) = fn(state)
 
   private val part1Strategy = Strategy(
     forward = { amount -> { s -> s.copy(x = s.x + amount) } },
