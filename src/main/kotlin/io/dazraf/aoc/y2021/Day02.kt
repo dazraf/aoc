@@ -9,10 +9,10 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
   fun part1() = run(part1Strategy)
   fun part2() = run(part2Strategy)
 
-  private fun run(strategy: Strategy) =
-    dataAsLines.parseWith(strategy)
-      .fold(State(), Day02::evolveState)
-      .let { it.x * it.y }
+  private fun run(strategy: Strategy) = dataAsLines
+    .parseWith(strategy)
+    .fold(State(), Day02::evolveState)
+    .let { it.x * it.y }
 
   private fun evolveState(state: State, fn: (State) -> State) = fn(state)
 
@@ -31,7 +31,8 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
   private data class State(val x: Int = 0, val y: Int = 0, val aim: Int = 0)
 
   /**
-   * A strategy is a set of functions per command type that given an amount for the command create a [State] evolution function
+   * A strategy is a set of functions, one per command type, that given an amount for the command,
+   * create a [State] evolution function ([State]) -> [State]
    */
   private data class Strategy(
     val forward: (Int) -> (State) -> State,
