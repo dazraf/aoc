@@ -6,47 +6,44 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
   @JvmStatic
   fun main(args: Array<String>) = solve()
 
-  fun part1() = run(part1Strategy, Part1State()) { it.y * it.x }
-  fun part2() = run(part2Strategy, Part2State()) { it.y * it.x }
+  fun part1() = run(part1Strategy)
+  fun part2() = run(part2Strategy)
 
-  private fun <S : Any> run(strategy: Strategy<S>, initial: S, resultCalc: (S) -> Int) =
+  private fun run(strategy: Strategy) =
     dataAsLines.parseWith(strategy)
-      .fold(initial) { state, fn -> fn(state) }
-      .let(resultCalc)
+      .fold(State(), Day02::evolveState)
+      .let { it.x * it.y }
 
-  private data class Part1State(val x: Int = 0, val y: Int = 0)
+  private fun evolveState(state: State, fn: (State) -> State) = fn(state)
 
-  private val part1Strategy = Strategy<Part1State>(
+
+  private val part1Strategy = Strategy(
     forward = { amount -> { s -> s.copy(x = s.x + amount) } },
     up = { amount -> { s -> s.copy(y = s.y - amount) } },
-    down = { amount -> { s -> s.copy(y = s.y - amount) } }
+    down = { amount -> { s -> s.copy(y = s.y + amount) } }
   )
 
-  private data class Part2State(val x: Int = 0, val y: Int = 0, val aim: Int = 0)
-
-  private val part2Strategy = Strategy<Part2State>(
-    forward = { amount ->
-      { s ->
-        s.copy(
-          x = s.x + amount,
-          y = s.y + s.aim * amount
-        )
-      }
-    },
+  private val part2Strategy = Strategy(
+    forward = { amount -> { s -> s.copy(x = s.x + amount, y = s.y + s.aim * amount) } },
     up = { amount -> { s -> s.copy(aim = s.aim - amount) } },
     down = { amount -> { s -> s.copy(aim = s.aim + amount) } }
   )
 
-  private data class Strategy<S : Any>(
-    val forward: (Int) -> (S) -> S,
-    val up: (Int) -> (S) -> S,
-    val down: (Int) -> (S) -> S
+  private data class State(val x: Int = 0, val y: Int = 0, val aim: Int = 0)
+
+  /**
+   * A strategy is a set of functions per command type that given an amount for the command create a [State] evolution function
+   */
+  private data class Strategy(
+    val forward: (Int) -> (State) -> State,
+    val up: (Int) -> (State) -> State,
+    val down: (Int) -> (State) -> State
   )
 
   /**
-   * parse the instructions to generate a [Sequence] of state evolving functions ([S]) -> [S]
+   * parse the instructions to generate a [Sequence] of [State] evolving functions ([State]) -> [State]
    */
-  private fun <S : Any> Sequence<String>.parseWith(strategy: Strategy<S>) = parsePairs().map { (command, amount) ->
+  private fun Sequence<String>.parseWith(strategy: Strategy) = parsePairs().map { (command, amount) ->
     when (command) {
       "forward" -> strategy.forward(amount)
       "down" -> strategy.down(amount)
