@@ -16,7 +16,6 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
 
   private fun evolveState(state: State, fn: (State) -> State) = fn(state)
 
-
   private val part1Strategy = Strategy(
     forward = { amount -> { s -> s.copy(x = s.x + amount) } },
     up = { amount -> { s -> s.copy(y = s.y - amount) } },
