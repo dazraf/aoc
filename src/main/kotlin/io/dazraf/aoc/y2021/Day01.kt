@@ -6,10 +6,13 @@ object Day01 : Puzzle(2021, 1, "Sonar Sweep") {
   @JvmStatic
   fun main(args: Array<String>) = solve()
 
-  fun part1() = dataAsIntList.countDepthIncreases()
-  fun part2() = dataAsIntList.toTypedArray().let { data ->
-    (0 until data.size - 2).map { i -> data.slice(i..(i + 2)).sum() }.countDepthIncreases()
-  }
+  fun part1() = dataAsIntSeq.countDepthIncreases(1)
+  fun part2() = dataAsIntSeq.countDepthIncreases(3)
 
-  private fun List<Int>.countDepthIncreases() = zipWithNext().map { (lhs, rhs) -> rhs - lhs }.count { it > 0 }
+  private fun Sequence<Int>.countDepthIncreases(windowSize: Int) =
+    windowed(windowSize)
+      .zipWithNext()
+      .count { (window1, window2) ->
+        window2.last() > window1.first()
+      }
 }

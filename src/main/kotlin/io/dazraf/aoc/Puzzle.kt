@@ -29,7 +29,8 @@ fun Puzzle.solve() {
     }
 }
 
-val Puzzle.dataAsIntList get() = dataAsLines.map { it.toInt() }.toList()
+val Puzzle.dataAsIntSeq get() = dataAsLines.map { it.toInt() }
+val Puzzle.dataAsIntList get() = dataAsIntSeq.toList()
 val Puzzle.dataAsLongArray get() = dataAsLines.map { it.toLong() }.toList().toTypedArray()
 val Puzzle.puzzleDataURL
   get() = this.javaClass.classLoader.getResource(resourceFile) ?: error("resource not found: $resourceFile")

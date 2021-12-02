@@ -10,7 +10,7 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
   fun part2() = run(part2Strategy, Part2State()) { it.y * it.x }
 
   private fun <S : Any> run(strategy: Strategy<S>, initial: S, resultCalc: (S) -> Int) =
-    dataAsLines.parse(strategy)
+    dataAsLines.parseWith(strategy)
       .fold(initial) { state, fn -> fn(state) }
       .let(resultCalc)
 
@@ -26,15 +26,15 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
 
   private val part2Strategy = Strategy<Part2State>(
     forward = { amount ->
-      { pos ->
-        pos.copy(
-          x = pos.x + amount,
-          y = pos.y + pos.aim * amount
+      { s ->
+        s.copy(
+          x = s.x + amount,
+          y = s.y + s.aim * amount
         )
       }
     },
-    up = { amount -> { pos -> pos.copy(aim = pos.aim - amount) } },
-    down = { amount -> { pos -> pos.copy(aim = pos.aim + amount) } }
+    up = { amount -> { s -> s.copy(aim = s.aim - amount) } },
+    down = { amount -> { s -> s.copy(aim = s.aim + amount) } }
   )
 
   private data class Strategy<S : Any>(
@@ -44,9 +44,9 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
   )
 
   /**
-   * parse the instructions to generate a [Sequence] of transformers ([S]) -> [S]
+   * parse the instructions to generate a [Sequence] of state evolving functions ([S]) -> [S]
    */
-  private fun <S : Any> Sequence<String>.parse(strategy: Strategy<S>) = parsePairs().map { (command, amount) ->
+  private fun <S : Any> Sequence<String>.parseWith(strategy: Strategy<S>) = parsePairs().map { (command, amount) ->
     when (command) {
       "forward" -> strategy.forward(amount)
       "down" -> strategy.down(amount)
