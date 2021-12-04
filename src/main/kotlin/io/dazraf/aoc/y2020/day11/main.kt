@@ -1,13 +1,11 @@
-package io.dazraf.aoc.y2020
+package io.dazraf.aoc.y2020.day11
 
 import io.dazraf.aoc.*
 import io.dazraf.aoc.utilities.plus
 import io.dazraf.aoc.utilities.toTypedArray
-import io.dazraf.aoc.y2020.Day11.World
-import io.dazraf.aoc.y2020.Day11.World.Companion.EMPTY
-import io.dazraf.aoc.y2020.Day11.World.Companion.FLOOR
-import io.dazraf.aoc.y2020.Day11.World.Companion.OCCUPIED
-import io.dazraf.aoc.y2020.Day11.World.Companion.parse
+import io.dazraf.aoc.y2020.day11.World.Companion.EMPTY
+import io.dazraf.aoc.y2020.day11.World.Companion.FLOOR
+import io.dazraf.aoc.y2020.day11.World.Companion.OCCUPIED
 
 /**
  * The value of a cell in a [World]
@@ -26,22 +24,20 @@ typealias OccupiedCounter = World.(Coordinate) -> Int
  */
 typealias CoordinateEvolver = World.(Coordinate) -> Cell
 
-object Day11 : Puzzle(2020, 11, "Seating System") {
-  @JvmStatic
-  fun main(args: Array<String>) = Day11.solve()
+fun main() = Puzzle(2020, 11, "Seating System").solve(Puzzle::part1, Puzzle::part2)
 
-  fun part1(): Int {
+  fun Puzzle.part1(): Int {
     val part1Evolver = evolverGenerator(4, nearestNeighbourCounter)
     return runSimulation(part1Evolver)
   }
 
-  fun part2(): Int {
+  fun Puzzle.part2(): Int {
     val part1Evolver = evolverGenerator(5, lineOfSightCounter)
     return runSimulation(part1Evolver)
   }
 
-  private fun runSimulation(part1Evolver: CoordinateEvolver): Int {
-    val lastWorld = generateSequence(parse(dataAsLines.toList())) { world ->
+  private fun Puzzle.runSimulation(part1Evolver: CoordinateEvolver): Int {
+    val lastWorld = generateSequence(World.parse(dataSequence.toList())) { world ->
       when (val newWorld = world.evolve(part1Evolver)) {
         world -> null
         else -> newWorld
@@ -165,7 +161,6 @@ object Day11 : Puzzle(2020, 11, "Seating System") {
       }
     }
   }
-}
 
 
 
