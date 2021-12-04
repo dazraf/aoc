@@ -1,4 +1,3 @@
-window.addEventListener('click', function(e,s,r){if(e.target.nodeName==='CODE'&&e.detail===3){s=window.getSelection();s.removeAllRanges();r=document.createRange();r.selectNodeContents(e.target);s.addRange(r);}});
 
 \--- Day 1: Sonar Sweep ---
 ---------------------------
@@ -93,4 +92,3 @@ Consider sums of a three-measurement sliding window. _How many sums are larger t
 Your puzzle answer was `1627`.
 
 Both parts of this puzzle are complete! They provide two gold stars: \*\*
-
