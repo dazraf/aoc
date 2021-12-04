@@ -66,8 +66,6 @@ operator fun Pair<Double, Double>.times(number: Number): Pair<Double, Double> {
   return first * d to second * d
 }
 
-fun Pair<Double, Double>.round() = first.roundToInt() to second.roundToInt()
-
 fun List<Int>.multiply() = reduceOrNull { lhs, rhs -> lhs * rhs } ?: 0
 fun List<Long>.multiply() = reduceOrNull { lhs, rhs -> lhs * rhs } ?: 0
 inline operator fun <reified T : Number> T.plus(rhs: List<T>): List<T> = listOf(this) + rhs
@@ -94,10 +92,9 @@ fun <T> Iterable<T>.combinations(size: Int): Sequence<List<T>> {
 }
 
 inline fun <reified T> Sequence<T>.toTypedArray() = toList().toTypedArray()
-
+fun parseBinaryInt(str: String) = Integer.parseUnsignedInt(str, 2)
 fun String.toLongList() = split(",").map(String::trim).map(String::toLong)
 fun IntRange.grow(amount: Int) = (start - amount)..(endInclusive + amount)
-val Int.boundingRange get() = (this - 1)..(this + 1)
 
 fun IntArray.incrementForRanges(ranges: List<IntRange>): IntArray {
   val clone = this.clone()

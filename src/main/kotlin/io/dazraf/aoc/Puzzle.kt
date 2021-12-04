@@ -5,11 +5,6 @@ import io.dazraf.aoc.utilities.matches
 import io.github.classgraph.ClassGraph
 import java.lang.reflect.Modifier
 
-
-private const val santa = "🎅"
-private const val tree = "🎄"
-private const val present = "🎁"
-
 fun main() {
   println(jumboText("Advent of Code!"))
   allPuzzles.forEach { it.solve() }
@@ -24,7 +19,7 @@ fun Puzzle.solve() {
   println(title)
   this.javaClass.declaredMethods.filter { Modifier.isPublic(it.modifiers) && it.name.matches("part\\d+") }
     .sortedBy { it.name }.forEach { fn ->
-      println("$present Part ${fn.name.drop(4)}")
+      println("Part ${fn.name.drop(4)}")
       println(fn.invoke(this))
     }
 }
@@ -36,6 +31,7 @@ val Puzzle.puzzleDataURL
   get() = this.javaClass.classLoader.getResource(resourceFile) ?: error("resource not found: $resourceFile")
 val Puzzle.dataAsString get() = puzzleDataURL.readText()
 val Puzzle.dataAsLines get() = puzzleDataURL.openStream().bufferedReader().lineSequence()
+val Puzzle.dataAsLinesList get() = dataAsLines.toList()
 val Puzzle.dataAsBlocks get() = dataAsString.split(System.lineSeparator() + System.lineSeparator())
 val Puzzle.dataAsGroupedFields
   get() = dataAsBlocks.map { block ->
