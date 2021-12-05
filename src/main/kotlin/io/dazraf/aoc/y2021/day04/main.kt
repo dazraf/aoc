@@ -34,8 +34,8 @@ fun Puzzle.parse() = readRandomNumbers() to readBoards()
 data class Position(val row: Int = 0, val col: Int = 0)
 
 data class Board(val numbers: Map<Int, Position>, val lastNumber: Int = -1, val marked: Set<Position> = emptySet()) {
-  private val rows = 0 until numbers.values.maxOf { it.row } + 1
-  private val cols = 0 until numbers.values.maxOf { it.col } + 1
+  private val rows = 0..numbers.values.maxOf { it.row }
+  private val cols = 0..numbers.values.maxOf { it.col }
 
   fun isWinningBoard() =
     (rows.asSequence().map { isWinningRow(it) } + cols.asSequence().map { isWinningCol(it) }).any { it }
@@ -51,12 +51,12 @@ data class Board(val numbers: Map<Int, Position>, val lastNumber: Int = -1, val 
   override fun toString(): String = numbers.filterValues { marked.contains(it) }.keys.toString()
 }
 
+fun List<Board>.mark(number: Int) = map { it.mark(number) }
+
 fun Board.mark(number: Int): Board = when (val position = numbers[number]) {
   null -> this
   else -> copy(marked = marked + position, lastNumber = number)
 }
-
-fun List<Board>.mark(number: Int) = map { it.mark(number) }
 
 fun List<Board>.hasWinner() = map { it.isWinningBoard() }.any { it }
 
