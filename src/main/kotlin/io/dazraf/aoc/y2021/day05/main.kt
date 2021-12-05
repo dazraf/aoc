@@ -7,14 +7,17 @@ import kotlin.math.max
 
 fun main() = Puzzle(2021, 5, "Hydrothermal Venture").solve(Puzzle::part1, Puzzle::part2)
 
-fun Puzzle.part1(): Int = run(Segment::isRectilinear)
-fun Puzzle.part2(): Int = run { true }
+fun Puzzle.part1(): Int = run(rectilinearSegmentsStrategy)
+fun Puzzle.part2(): Int = run(allSegmentsStrategy)
 
 fun Puzzle.run(segmentSelectionStrategy: (Segment) -> Boolean): Int {
   val points = parseSegments().filter(segmentSelectionStrategy).flatMap(Segment::generatePoints)
   val pointCount = points.groupBy { it }.map { it.key to it.value.size }
   return pointCount.filter { (_, v) -> v > 1 }.size
 }
+
+val rectilinearSegmentsStrategy = Segment::isRectilinear
+val allSegmentsStrategy = { _: Segment -> true }
 
 typealias Point = Pair<Int, Int>
 val Point.x get() = first
