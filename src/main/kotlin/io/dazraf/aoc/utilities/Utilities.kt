@@ -17,6 +17,7 @@ operator fun Pair<Int, Int>.times(rhs: Pair<Int, Int>): Pair<Int, Int> = first *
 
 @JvmName("divIntInt")
 operator fun Pair<Int, Int>.div(rhs: Pair<Int, Int>): Pair<Int, Int> = first / rhs.first to second / rhs.second
+operator fun Pair<Int, Int>.div(denominator: Int): Pair<Int, Int> = (first / denominator) to (second / denominator)
 operator fun Pair<Int, Int>.times(factor: Int): Pair<Int, Int> = first * factor to second * factor
 val Pair<Int, Int>.manhattanDistance get() = abs(first) + abs(second)
 fun Pair<Int, Int>.addY(amount: Int) = Pair(first, second + amount)
