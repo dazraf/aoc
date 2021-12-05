@@ -14,7 +14,7 @@ val firstWinnerStrategy = { boards: List<Board> -> boards }
 val lastWinnerStrategy = { boards: List<Board> ->
   when (boards.size) {
     1 -> boards
-    else -> boards.filter { !it.isWinningBoard() }
+    else -> boards.filter { !it.isWinningBoard }
   }
 }
 
@@ -26,7 +26,7 @@ private fun Puzzle.run(strategy: (List<Board>) -> List<Board> = { it }): Int {
       currentBoards.hasWinner() -> null
       else -> strategy(currentBoards.mark(randomNumbers.next()))
     }
-  }.last().single { it.isWinningBoard() }.score
+  }.last().single { it.isWinningBoard }.score
 }
 
 fun Puzzle.parse() = readRandomNumbers() to readBoards()
@@ -37,8 +37,9 @@ data class Board(val numbers: Map<Int, Position>, val lastNumber: Int = -1, val 
   private val rows = 0..numbers.values.maxOf { it.row }
   private val cols = 0..numbers.values.maxOf { it.col }
 
-  fun isWinningBoard() =
+  val isWinningBoard by lazy {
     (rows.asSequence().map { isWinningRow(it) } + cols.asSequence().map { isWinningCol(it) }).any { it }
+  }
 
   val score by lazy { numbers.filterValues { !isMarked(it) }.keys.sum() * lastNumber }
 
@@ -58,7 +59,7 @@ fun Board.mark(number: Int): Board = when (val position = numbers[number]) {
   else -> copy(marked = marked + position, lastNumber = number)
 }
 
-fun List<Board>.hasWinner() = map { it.isWinningBoard() }.any { it }
+fun List<Board>.hasWinner() = map { it.isWinningBoard }.any { it }
 
 fun Puzzle.readBoards() = dataAsBlocks.drop(1).map { readBoard(it) }
 
