@@ -31,7 +31,7 @@ open class Puzzle(val year: Int, val day: Int, val title: String = "") {
   val dataSequence get() = dataFile.inputStream().bufferedReader().lineSequence()
   val dataIntList by lazy { dataList.map(String::toInt) }
   val dataAsLongArray by lazy { dataSequence.map { it.toLong() }.toList().toTypedArray() }
-  val dataAsIntSeq get() = dataList.asSequence().map { it.toInt() }
+  val dataIntSequence get() = dataList.asSequence().map { it.toInt() }
   val dataAsBlocks by lazy { data.split(System.lineSeparator() + System.lineSeparator()) }
   val dataAsGroupedFields by lazy {
     dataAsBlocks.map { block ->
