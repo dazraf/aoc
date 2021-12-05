@@ -46,15 +46,16 @@ open class Puzzle(val year: Int, val day: Int, val title: String = "") {
   }
 
   override fun toString(): String {
-    return "${jumboText("Year $year Day $day", "script")}\n$title"
+    return "${jumboText("Year $year Day $day", "script")}\n--- $title ---"
   }
 
   fun solve(vararg parts: Puzzle.() -> Any) {
     println(this)
     parts.forEachIndexed { index, fn ->
-      println("Part ${index + 1}")
+      print("Part ${index + 1}: ")
       println(fn())
     }
+    println()
   }
 }
 
