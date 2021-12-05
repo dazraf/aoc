@@ -67,4 +67,4 @@ Using this new interpretation of the commands, calculate the horizontal position
 
 Your puzzle answer was `1960569556`.
 
-Both parts of this puzzle are complete! They provide two gold stars: \*\*
+Both parts of this puzzle are complete! They provide two gold stars: **

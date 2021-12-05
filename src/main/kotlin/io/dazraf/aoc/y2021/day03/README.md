@@ -76,4 +76,4 @@ Use the binary numbers in your diagnostic report to calculate the oxygen generat
 
 Your puzzle answer was `4550283`.
 
-Both parts of this puzzle are complete! They provide two gold stars: \*\*
+Both parts of this puzzle are complete! They provide two gold stars: **
