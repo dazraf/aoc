@@ -11,29 +11,33 @@ fun main() = Puzzle(2021, 6, "Lanternfish").solve(Puzzle::part1, Puzzle::part2)
 fun Puzzle.part1() = calculate(80)
 fun Puzzle.part2() = calculate(256)
 
-fun Puzzle.calculate(totalDays: Int) =
-  generateSequence(0 to initialPopulation()) { (day, population) ->
-    when (day) {
-      totalDays -> null
-      else -> (day + 1) to evolve(population)
-    }
-  }.last().second.sum()
-
-// approach: we encode the population in an array, with the i'th element being the number of fish with i iterations left
-// on their timer
-
-fun Puzzle.initialPopulation() = Array(newFishTimer + 1) { 0L }.apply {
-  dataList.first().toIntList().forEach { i -> ++this[i] }
+/**
+ * @param population - map of remaining days on the timer to total fish population for that group
+ * @param daysRemaining - number of simulation days remaining
+ */
+class State(private val population: Map<Int, Long>, val daysRemaining: Int) {
+  operator fun get(day: Int) = population[day] ?: 0
+  val totalPopulation by lazy { population.values.sum() }
 }
 
-fun evolve(population: Array<Long>) =
-  (0..newFishTimer).map { daysLeft ->
-    when (daysLeft) {
-      // when timer runs out it resets back to [resetFishTimer]
-      resetFishTimer -> population[daysLeft + 1] + population[0]
-      // when timer runs out the fish reproduces a new one with timer value [newFishTimer]
-      newFishTimer -> population[0]
-      // everyone else merely ticks down
-      else -> population[daysLeft + 1]
+fun State.evolve() =
+  when (daysRemaining) {
+    0 -> null
+    else -> {
+      val newPopulation =
+        (0..newFishTimer).associateWith { daysLeft ->
+          when (daysLeft) {
+            resetFishTimer -> this[daysLeft + 1] + this[0]
+            newFishTimer -> this[0]
+            else -> this[daysLeft + 1]
+          }
+        }
+      State(newPopulation, daysRemaining - 1)
     }
-  }.toTypedArray()
+  }
+
+fun Puzzle.calculate(totalDays: Int) =
+  generateSequence(State(initialPopulation(), totalDays), State::evolve).last().totalPopulation
+
+fun Puzzle.initialPopulation() =
+  dataList.first().toIntList().groupBy { it }.map { (days, fish) -> days to fish.size.toLong() }.toMap()
