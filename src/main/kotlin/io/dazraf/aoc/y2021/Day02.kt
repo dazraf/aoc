@@ -17,6 +17,8 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
       .fold(State()) { s, fn -> fn(s) }
       .let { it.x * it.y }
 
+  private data class State(val x: Int = 0, val y: Int = 0, val aim: Int = 0)
+
   private const val FORWARD = "forward"
   private const val UP = "up"
   private const val DOWN = "down"
@@ -32,8 +34,6 @@ object Day02 : Puzzle(2021, 2, "Dive!") {
     UP to { amount -> { s -> s.copy(aim = s.aim - amount) } },
     DOWN to { amount -> { s -> s.copy(aim = s.aim + amount) } }
   )
-
-  private data class State(val x: Int = 0, val y: Int = 0, val aim: Int = 0)
 
   private fun Sequence<String>.parseWith(strategy: Map<String, (Int) -> (State) -> State>) =
     parsePairs().map { (command, amount) ->
