@@ -44,7 +44,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.132</version>
+            <version>4.8.137</version>
         </dependency>
         <dependency>
             <groupId>com.github.lalyos</groupId>
@@ -80,7 +80,7 @@
                 </executions>
                 <configuration>
                     <args>
-                        <arg>-Werror</arg>
+<!--                        <arg>-Werror</arg>-->
                     </args>
                 </configuration>
             </plugin>
