@@ -22,10 +22,7 @@ class State(private val population: Map<Int, Long>, val daysRemaining: Int) {
   val totalPopulation by lazy { population.values.sum() }
 }
 
-fun State.evolveOrNull() = when (daysRemaining) {
-  0 -> null
-  else -> evolve()
-}
+fun State.evolveOrNull() = if (daysRemaining == 0) null else evolve()
 
 private fun State.evolve() = State(
   (0..newFishTimer).associateWith { daysLeft ->
