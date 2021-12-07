@@ -126,3 +126,4 @@ fun List<IntRange>.generatePointSequence(): Sequence<IntArray> = generateSequenc
 
 fun List<IntRange>.grow(amount: Int): List<IntRange> = map { range -> (range.first - amount)..(range.last + amount) }
 fun String.toIntList() = split(',').map(String::toInt)
+fun List<Int>.boundingRange() = (minOrNull()?: error("list has no elements")) .. (maxOrNull()?: error("list has no elements"))
