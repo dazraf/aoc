@@ -10,9 +10,10 @@ fun main() = Puzzle(2021, 7, "The Treachery of Whales").solve(Puzzle::part1, Puz
 fun Puzzle.part1() = compute(::part1FuelCost)
 fun Puzzle.part2() = compute(::part2FuelCost)
 
-private fun Puzzle.compute(fuelCalculator: (Int) -> Int) = dataList.first().toIntList().let { crabs ->
-  crabs.boundingRange().minOf { position -> crabs.sumOf { crab -> fuelCalculator(abs(crab - position)) } }
-}
+private fun Puzzle.compute(fuelCalculator: (Int) -> Int) =
+  dataList.first().toIntList().let { crabs ->
+    crabs.boundingRange().minOf { position -> crabs.sumOf { crab -> fuelCalculator(abs(crab - position)) } }
+  }
 
 fun part1FuelCost(delta: Int) = delta
 fun part2FuelCost(delta: Int) = (delta * (delta + 1)) / 2 // simple nth partial sum of series
