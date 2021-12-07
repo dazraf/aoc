@@ -17,4 +17,4 @@ fun Puzzle.compute(fuelCalculator: (Int) -> Int) = readCrabs().let { crabs ->
 fun part1FuelCost(delta: Int) = delta
 fun part2FuelCost(delta: Int) = (delta * (delta + 1)) / 2 // simple nth partial sum of series
 
-fun Puzzle.readCrabs() = dataList.first().toIntList()
+fun Puzzle.readCrabs() = data.trim().toIntList()
