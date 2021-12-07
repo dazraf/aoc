@@ -24,7 +24,7 @@ class State(private val population: Map<Int, Long>, val daysRemaining: Int) {
 
 fun State.evolveOrNull() = if (daysRemaining == 0) null else evolve()
 
-private fun State.evolve() = State(
+fun State.evolve() = State(
   (0..newFishTimer).associateWith { daysLeft ->
     when (daysLeft) {
       resetFishTimer -> this[daysLeft + 1] + this[0]
